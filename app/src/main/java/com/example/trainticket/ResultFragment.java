@@ -21,13 +21,14 @@ import android.widget.TextView;
 public class ResultFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
-    private String info;
+    private static String info;
 
     public ResultFragment() {
         // Required empty public constructor
     }
-    public void setInfo(String n) {
-        this.info = n;
+    public static void setInfo(String n) {
+
+        info = n;
     }
     public String getInfo() {
         return this.info;
