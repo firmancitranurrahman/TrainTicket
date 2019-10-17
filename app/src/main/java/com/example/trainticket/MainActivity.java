@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements  BottomNavigation
     @Override
     public void onSubmitClicked(int total) {
         String simpan = String.valueOf(total);
-        ResultFragment.setInfo("Silakan Lakukan Pembayaran ke Kasir sebesar : " + simpan);
+        ResultFragment.setInfo("Silakan Lakukan Pembayaran ke Kasir sebesar : " +"Rp."+ simpan);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.frameLayout, resultFragment)
                 .commit();
