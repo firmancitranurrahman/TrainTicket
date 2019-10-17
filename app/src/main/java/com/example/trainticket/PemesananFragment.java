@@ -6,9 +6,14 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioGroup;
+import android.widget.Toast;
 
 
 /**
@@ -18,7 +23,6 @@ import android.view.ViewGroup;
  * to handle interaction events.
  */
 public class PemesananFragment extends Fragment {
-
     private OnFragmentInteractionListener mListener;
 
     public PemesananFragment() {
@@ -30,15 +34,39 @@ public class PemesananFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_pemesanan, container, false);
+        View view = inflater.inflate(R.layout.fragment_pemesanan, container, false);
+        final EditText name = view.findViewById(R.id.nameText);
+        final EditText address = view.findViewById(R.id.addressText);
+        final EditText tlp = view.findViewById(R.id.telp);
+        final EditText jp = view.findViewById(R.id.jmlpenumpang);
+        final RadioGroup keretagroup = view.findViewById(R.id.kereta);
+
+        Button submit = view.findViewById(R.id.buttonsubmit);
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mListener != null){
+                    String nm = name.getText().toString();
+                    String ad = address.getText().toString();
+                    String tl = tlp.getText().toString();
+                    String penumpangString = jp.getText().toString();
+                    int checkedId = keretagroup.getCheckedRadioButtonId();
+                    if((checkedId != -1) && !TextUtils.isEmpty(penumpangString)){
+                        int jumlah = Integer.parseInt(penumpangString);
+                        int k = (checkedId == R.id.gajayana) ? Pesan.GAJAYANA : Pesan.MATARMAJA;
+                        Pesan pesan = new Pesan(jumlah, k);
+                        mListener.onSubmitClicked(pesan.getTotal());
+                    }
+                } else{
+                    Toast.makeText(getActivity(), "Tidak Ada data yang diisi", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
+
 
     @Override
     public void onAttach(Context context) {
@@ -69,6 +97,8 @@ public class PemesananFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+//        void onFragmentInteraction(Uri uri);
+        void onSubmitClicked(int total);
+
     }
 }
